@@ -10,7 +10,7 @@ batchnorm_fused = True
 activation_fn = tf.nn.relu
 
 
-class CocoPart(Enum):
+class CocoPart(Enum):#common object in context的分類方式
     Nose = 0
     Neck = 1
     RShoulder = 2
@@ -32,7 +32,7 @@ class CocoPart(Enum):
     Background = 18
 
 
-class MPIIPart(Enum):
+class MPIIPart(Enum):#
     RAnkle = 0
     RKnee = 1
     RHip = 2
