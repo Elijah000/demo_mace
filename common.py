@@ -10,7 +10,7 @@ batchnorm_fused = True
 activation_fn = tf.nn.relu
 
 
-class CocoPart(Enum):#common object in context的分類方式
+class CocoPart(Enum):#common object in context的分類方式，面
     Nose = 0
     Neck = 1
     RShoulder = 2
@@ -32,7 +32,7 @@ class CocoPart(Enum):#common object in context的分類方式
     Background = 18
 
 
-class MPIIPart(Enum):#
+class MPIIPart(Enum):#MPII Human Pose dataset的分類方式，線
     RAnkle = 0
     RKnee = 1
     RHip = 2
@@ -67,8 +67,8 @@ class MPIIPart(Enum):#
         #     MPIIPart.Nose: CocoPart.Nose,
         # }
 
-        t = [
-            (MPIIPart.Head, CocoPart.Nose),
+        t = [#t為用來儲存個組合的陣列
+            (MPIIPart.Head, CocoPart.Nose),#只有此項組合不同
             (MPIIPart.Neck, CocoPart.Neck),
             (MPIIPart.RShoulder, CocoPart.RShoulder),
             (MPIIPart.RElbow, CocoPart.RElbow),
@@ -86,20 +86,20 @@ class MPIIPart(Enum):#
 
         pose_2d_mpii = []
         visibilty = []
-        for mpi, coco in t:
-            if coco.value not in human.body_parts.keys():
+        for mpi, coco in t:#在t的陣列裡以mpi,coco兩兩循環變數跑回圈
+            if coco.value not in human.body_parts.keys():#若是coco值不在human.body_parts中，不顯示
                 pose_2d_mpii.append((0, 0))
                 visibilty.append(False)
                 continue
-            pose_2d_mpii.append((human.body_parts[coco.value].x, human.body_parts[coco.value].y))
+            pose_2d_mpii.append((human.body_parts[coco.value].x, human.body_parts[coco.value].y))#辨識成功，回傳影相對應
             visibilty.append(True)
         return pose_2d_mpii, visibilty
 
-CocoPairs = [
+CocoPairs = [#各部位的連接，如：1,2為脖子和右肩
     (1, 2), (1, 5), (2, 3), (3, 4), (5, 6), (6, 7), (1, 8), (8, 9), (9, 10), (1, 11),
     (11, 12), (12, 13), (1, 0), (0, 14), (14, 16), (0, 15), (15, 17), (2, 16), (5, 17)
 ]   # = 19
-CocoPairsRender = CocoPairs[:-2]
+CocoPairsRender = CocoPairs[:-2]#儲存cocopairs陣列中，除了倒數兩個元素的陣列
 # CocoPairsNetwork = [
 #     (12, 13), (20, 21), (14, 15), (16, 17), (22, 23), (24, 25), (0, 1), (2, 3), (4, 5),
 #     (6, 7), (8, 9), (10, 11), (28, 29), (30, 31), (34, 35), (32, 33), (36, 37), (18, 19), (26, 27)
@@ -107,17 +107,17 @@ CocoPairsRender = CocoPairs[:-2]
 
 CocoColors = [[255, 0, 0], [255, 85, 0], [255, 170, 0], [255, 255, 0], [170, 255, 0], [85, 255, 0], [0, 255, 0],
               [0, 255, 85], [0, 255, 170], [0, 255, 255], [0, 170, 255], [0, 85, 255], [0, 0, 255], [85, 0, 255],
-              [170, 0, 255], [255, 0, 255], [255, 0, 170], [255, 0, 85]]
+              [170, 0, 255], [255, 0, 255], [255, 0, 170], [255, 0, 85]]#cococolor的色塊
 
 
-def read_imgfile(path, width=None, height=None):
+def read_imgfile(path, width=None, height=None):#讀取圖檔
     val_image = cv2.imread(path, cv2.IMREAD_COLOR)
     if width is not None and height is not None:
         val_image = cv2.resize(val_image, (width, height))
     return val_image
 
 
-def get_sample_images(w, h):
+def get_sample_images(w, h):#從樣本資料夾取得圖片
     val_image = [
         read_imgfile('./images/p1.jpg', w, h),
         read_imgfile('./images/p2.jpg', w, h),
@@ -135,7 +135,7 @@ def get_sample_images(w, h):
     return val_image
 
 
-def to_str(s):
+def to_str(s):#將未知亂碼轉為utf-8
     if not isinstance(s, str):
         return s.decode('utf-8')
     return s
