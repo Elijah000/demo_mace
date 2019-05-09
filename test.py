@@ -20,7 +20,7 @@ def create_dataset(dataset, look_back=1):
 	return numpy.array(dataX), numpy.array(dataY)
 
 # 載入訓練資料
-dataframe = read_csv('international-airline-passengers.csv', usecols=[1], engine='python', skipfooter=3)
+dataframe = read_csv('testselect.csv', usecols=[1], engine='python', skipfooter=3)
 dataset = dataframe.values
 dataset = dataset.astype('float32')
 # 正規化(normalize) 資料，使資料值介於[0, 1]
